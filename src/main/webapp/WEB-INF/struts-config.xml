@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+
+
+<struts-config>
+    <form-beans>
+        <form-bean name="newsForm" type="com.epam.testapp.presentation.form.NewsForm">
+            <form-property name="Date" type="java.lang.String"/>
+        </form-bean>
+    </form-beans>
+    
+    <global-exceptions>
+        <exception key="error" type="java.lang.Exception" path="/jsp/error.jsp"/>
+    </global-exceptions>
+    
+    <global-forwards>
+        <forward name="/News_action.do" path="News_action.do?method=list"/>
+    </global-forwards>
+
+    <action-mappings>
+        <action name="newsForm" 
+                path="/News_action" 
+                type="org.springframework.web.struts.DelegatingActionProxy"
+                parameter="method"
+                scope="session">
+            <forward name="news_view_page"  path="news_view"/>
+            <forward name="news_save_page" path="news_save"/>
+            <forward name="news_list_page" path="news_list"/>
+            <forward name="error_page" path="/jsp/error.jsp"/>
+        </action>
+    </action-mappings>   
+   
+    <controller processorClass="org.apache.struts.tiles.TilesRequestProcessor"/>
+    <message-resources parameter="properties.language.MessageResources"/>
+    
+    <plug-in className="org.apache.struts.tiles.TilesPlugin">
+        <set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml"/>
+    </plug-in>
+    
+    <plug-in className="org.springframework.web.struts.ContextLoaderPlugIn"> 
+        <set-property property="contextConfigLocation" value="/WEB-INF/classes/spring/application-context.xml"/>
+    </plug-in>
+    
+</struts-config>
